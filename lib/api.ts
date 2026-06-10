@@ -31,9 +31,10 @@ noteInstance.interceptors.request.use((config) => {
 export const fetchNotes = async (
   page: number,
   search: string,
+  tag?: string,
 ): Promise<FetchNotesResponse> => {
   const response = await noteInstance.get<FetchNotesResponse>("/notes", {
-    params: { page, search },
+    params: { page, search, tag },
   });
   return response.data;
 };
@@ -51,4 +52,16 @@ export const createNote = async (noteData: CreateNoteData): Promise<Note> => {
 export const deleteNote = async (id: string): Promise<Note> => {
   const response = await noteInstance.delete<Note>(`/notes/${id}`);
   return response.data;
+};
+export type Category = {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const getCategories = async () => {
+  const res = await axios<Category[]>("/categories");
+  return res.data;
 };

@@ -30,7 +30,6 @@ function NoteList({ notes }: NoteListProps) {
             <div className={css.footer}>
               <span className={css.tag}>{note.tag}</span>
 
-              {/* Кнопка на своєму законному місці, тут вона бачить конкретний note.id */}
               <Link href={`/notes/${note.id}`} className={css.link}>
                 View details
               </Link>
@@ -48,5 +47,4 @@ function NoteList({ notes }: NoteListProps) {
     </>
   );
 }
-
 export default NoteList;
