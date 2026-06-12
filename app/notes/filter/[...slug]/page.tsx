@@ -26,7 +26,6 @@ export default async function NotesPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const { page = "1", search = "" } = await searchParams;
 
-  // 👉 витягуємо тег із URL
   const tag = slug?.[0] ?? "all";
 
   const queryClient = new QueryClient();

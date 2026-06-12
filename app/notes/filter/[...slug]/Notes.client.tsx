@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import Link from "next/link"; // 1. Імпортуємо Link для навігації
 
-import Modal from "@/components/Modal/Modal";
-import NoteForm from "@/components/NoteForm/NoteForm";
+// Видалено імпорти Modal та NoteForm, бо вони тут більше не потрібні
 import NoteList from "@/components/NoteList/NoteList";
 import Pagination from "@/components/Pagination/Pagination";
 import SearchBox from "@/components/SearchBox/SearchBox";
@@ -35,7 +35,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
   const notes = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 1;
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Видалено стейт const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className={css.app}>
@@ -50,9 +50,10 @@ export default function NotesClient({ tag }: NotesClientProps) {
           />
         )}
 
-        <button className={css.button} onClick={() => setIsModalOpen(true)}>
+        {/* 2. Замінюємо <button> на <Link> з маршрутом на сторінку створення */}
+        <Link href="/notes/action/create" className={css.button}>
           Create note +
-        </button>
+        </Link>
       </header>
 
       <div className={css.mainContent}>
@@ -70,9 +71,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
           ))}
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <NoteForm onClose={() => setIsModalOpen(false)} />
-      </Modal>
+      {/* 3. Весь блок <Modal>...</Modal> повністю видалено */}
     </div>
   );
 }
