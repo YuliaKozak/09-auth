@@ -3,14 +3,9 @@ import {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
-
+import { Metadata } from "next";
 import { fetchNotes } from "@/lib/api";
 import NotesClient from "./Notes.client";
-
-export const metadata = {
-  title: "My Notes | NoteHub",
-  description: "Manage your personal notes here.",
-};
 
 type Props = {
   params: Promise<{
@@ -21,6 +16,33 @@ type Props = {
     search?: string;
   }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const tag = slug?.[0] ?? "all";
+
+  const formattedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
+  const title = `${formattedTag} Notes | NoteHub`;
+  const description = `Manage your ${tag} notes, tasks, and ideas efficiently with NoteHub.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://notehub.com/notes/filter/${tag}`,
+      images: [
+        {
+          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+          width: 1200,
+          height: 630,
+          alt: `${formattedTag} Notes`,
+        },
+      ],
+    },
+  };
+}
 
 export default async function NotesPage({ params, searchParams }: Props) {
   const { slug } = await params;

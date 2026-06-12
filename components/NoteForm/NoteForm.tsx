@@ -1,8 +1,8 @@
 "use client";
 
-import { useNoteDraftStore } from "@/lib/stores/noteStore";
+import { useNoteDraftStore } from "@/lib/store/noteStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNote } from "@/lib/api";
+import { createNote, type CreateNoteData } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import css from "./NoteForm.module.css";
 
@@ -27,7 +27,12 @@ function NoteForm() {
     >,
   ) => {
     const { name, value } = e.target;
-    setDraft({ [name]: value });
+
+    if (name === "tag") {
+      setDraft({ [name]: value as CreateNoteData["tag"] });
+    } else {
+      setDraft({ [name]: value });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -48,8 +53,9 @@ function NoteForm() {
           name="title"
           type="text"
           className={css.input}
-          defaultValue={draft.title}
+          value={draft.title}
           onChange={handleChange}
+          required
         />
       </div>
 
@@ -60,7 +66,7 @@ function NoteForm() {
           name="content"
           rows={8}
           className={css.textarea}
-          defaultValue={draft.content}
+          value={draft.content}
           onChange={handleChange}
         />
       </div>
@@ -71,7 +77,7 @@ function NoteForm() {
           id="tag"
           name="tag"
           className={css.select}
-          defaultValue={draft.tag}
+          value={draft.tag}
           onChange={handleChange}
         >
           <option value="Todo">Todo</option>
