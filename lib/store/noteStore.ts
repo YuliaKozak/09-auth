@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { CreateNoteData } from "../api"; // Використовуємо CreateNoteData, де є tag
+import { CreateNoteData } from "../api/clientApi"; // Використовуємо CreateNoteData, де є tag
 
 type NoteDraftStore = {
   draft: CreateNoteData;

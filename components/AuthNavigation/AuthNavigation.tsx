@@ -1,0 +1,38 @@
+"use client";
+import Link from "next/link";
+import css from "./AuthNavigation.module.css";
+
+export const AuthNavigation = () => {
+  const handleLogout = () => {};
+  // Тут у майбутньому буде виклик функції logout() з clientApi
+
+  return (
+    <>
+      <li className={css.navigationItem}>
+        <Link href="/profile" prefetch={false} className={css.navigationLink}>
+          Profile
+        </Link>
+      </li>
+
+      <li className={css.navigationItem}>
+        <p className={css.userEmail}>User email</p>
+        <button className={css.logoutButton} onClick={handleLogout}>
+          Logout
+        </button>
+      </li>
+
+      <li className={css.navigationItem}>
+        <Link href="/sign-in" prefetch={false} className={css.navigationLink}>
+          Login
+        </Link>
+      </li>
+
+      <li className={css.navigationItem}>
+        <Link href="/sign-up" prefetch={false} className={css.navigationLink}>
+          Sign up
+        </Link>
+      </li>
+    </>
+  );
+};
+export default AuthNavigation;

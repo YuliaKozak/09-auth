@@ -5,6 +5,7 @@ import Footer from "@/components/Footer/Footer";
 import "./globals.css";
 import { Roboto } from "next/font/google";
 import { Metadata } from "next";
+//import AuthNavigation from "@/components/AuthNavigation/AuthNavigation";
 
 export const metadata: Metadata = {
   title: "NoteHub | Your Personal Notebook",
