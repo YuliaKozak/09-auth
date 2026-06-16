@@ -8,10 +8,12 @@ import { useRouter } from "next/navigation";
 import { register, RegisterRequest } from "@/lib/api/clientApi";
 import { ApiError } from "@/lib/api/api";
 import css from "./SignUpPage.module.css";
+import { useAuthStore } from "@/lib/store/authStore";
 
 const SignUp = () => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
     setError("");
@@ -20,6 +22,7 @@ const SignUp = () => {
       const formValues = Object.fromEntries(formData) as RegisterRequest; // Виконуємо запит
       const res = await register(formValues); // Виконуємо редірект або відображаємо помилку
       if (res) {
+        setUser(res);
         router.push("/profile");
       } else {
         setError("Invalid email or password");
