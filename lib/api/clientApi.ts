@@ -78,11 +78,6 @@ export const getMe = async (): Promise<User> => {
   return res.data;
 };
 
-export const updateMe = async (data: Partial<User>): Promise<User> => {
-  const res = await api.patch<User>("/auth/me", data);
-  return res.data;
-};
-
 export type UpdateUserRequest = {
   username: string;
 };
