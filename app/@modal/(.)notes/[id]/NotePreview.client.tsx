@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import Modal from "@/components/Modal/Modal";
-import { fetchSingleNote } from "@/lib/api/clientApi";
+import { fetchNoteById } from "@/lib/api/clientApi";
 
 type Props = {
   id: string;
@@ -15,12 +15,12 @@ export default function NotePreviewClient({ id }: Props) {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["note", id],
-    queryFn: () => fetchSingleNote(id),
+    queryFn: () => fetchNoteById(id),
     refetchOnMount: false,
   });
 
   const handleClose = () => {
-    router.back(); // 🔥 повертає на попередній маршрут
+    router.back();
   };
 
   return (
