@@ -33,11 +33,11 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
 };
 
 export const getMe = async (): Promise<User> => {
-  const response = await api.get<User>("/auth/me", getAuthHeaders());
+  const response = await api.get<User>("/users/me", getAuthHeaders());
   return response.data;
 };
 
 export const checkSession = async () => {
   const response = await api.get("/auth/session", getAuthHeaders());
-  return response.data;
+  return response;
 };

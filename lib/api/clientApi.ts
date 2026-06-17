@@ -19,7 +19,7 @@ export interface FetchNotesResponse {
 export type RegisterRequest = {
   email: string;
   password: string;
-  userName: string;
+  username: string;
 };
 
 export type LoginRequest = {
@@ -74,7 +74,7 @@ export const checkSession = async () => {
 };
 
 export const getMe = async (): Promise<User> => {
-  const res = await api.get<User>("/auth/me");
+  const res = await api.get<User>("/users/me");
   return res.data;
 };
 
@@ -83,6 +83,6 @@ export type UpdateUserRequest = {
 };
 
 export const updateMe = async (data: UpdateUserRequest): Promise<User> => {
-  const res = await api.patch<User>("/auth/update", data);
+  const res = await api.patch<User>("/users/me", data);
   return res.data;
 };

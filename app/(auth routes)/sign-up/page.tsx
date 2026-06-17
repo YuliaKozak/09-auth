@@ -1,11 +1,8 @@
-// app/(public routes)/sign-up/page.tsx
-
 "use client";
 
-// Додаємо імпорти
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { register, RegisterRequest } from "@/lib/api/clientApi";
+import { register } from "@/lib/api/clientApi";
 import { ApiError } from "@/lib/api/api";
 import css from "./SignUpPage.module.css";
 import { useAuthStore } from "@/lib/store/authStore";
@@ -17,10 +14,27 @@ const SignUp = () => {
 
   const handleSubmit = async (formData: FormData) => {
     setError("");
+
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    // Валідація на клієнті перед відправкою
+    if (!email || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+
     try {
-      // Типізуємо дані форми
-      const formValues = Object.fromEntries(formData) as RegisterRequest; // Виконуємо запит
-      const res = await register(formValues); // Виконуємо редірект або відображаємо помилку
+      // 🛠 Автоматично створюємо username з email (наприклад, "yuliia" з "yuliia@example.com")
+      const generatedUsername = email.split("@")[0];
+
+      // 🛠 Передаємо суворо очищені дані, що відповідають специфікації бекенду
+      const res = await register({
+        email: email.trim(),
+        password: password,
+        username: generatedUsername, // Тепер API отримає валідну структуру в нижньому регістрі
+      });
+
       if (res) {
         setUser(res);
         router.push("/profile");
@@ -30,6 +44,7 @@ const SignUp = () => {
     } catch (error) {
       setError(
         (error as ApiError).response?.data?.error ??
+          (error as ApiError).response?.data?.message ??
           (error as ApiError).message ??
           "Oops... some error",
       );
@@ -37,53 +52,40 @@ const SignUp = () => {
   };
 
   return (
-    <>
-      <main className={css.mainContent}>
-        <h1 className={css.formTitle}>Sign up</h1>
-        <form action={handleSubmit} className={css.form}>
-          <div className={css.formGroup}>
-            <label htmlFor="userName">Username</label>
-            <input
-              id="userName"
-              type="text"
-              name="userName"
-              className={css.input}
-              required
-            />
-          </div>
+    <main className={css.mainContent}>
+      <h1 className={css.formTitle}>Sign up</h1>
+      <form action={handleSubmit} className={css.form}>
+        <div className={css.formGroup}>
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            className={css.input}
+            required
+          />
+        </div>
 
-          <div className={css.formGroup}>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              className={css.input}
-              required
-            />
-          </div>
+        <div className={css.formGroup}>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            className={css.input}
+            required
+          />
+        </div>
 
-          <div className={css.formGroup}>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              className={css.input}
-              required
-            />
-          </div>
+        <div className={css.actions}>
+          <button type="submit" className={css.submitButton}>
+            Register
+          </button>
+        </div>
 
-          <div className={css.actions}>
-            <button type="submit" className={css.submitButton}>
-              Register
-            </button>
-          </div>
-
-          {error && <p className={css.error}>{error}</p>}
-        </form>
-      </main>
-    </>
+        {error && <p className={css.error}>{error}</p>}
+      </form>
+    </main>
   );
 };
 
